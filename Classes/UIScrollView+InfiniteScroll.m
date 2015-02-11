@@ -362,7 +362,9 @@ CGFloat pb_infiniteScrollExtraBottomInset;
     // remove extra inset added to pad infinite scroll
     contentInset.bottom -= self.pb_infiniteScrollExtraBottomInset;
     
-    [self pb_setScrollViewContentInset:contentInset animated:YES completion:^(BOOL finished) {
+    BOOL iPad = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    
+    [self pb_setScrollViewContentInset:contentInset animated:!iPad completion:^(BOOL finished) {
         if([activityIndicator respondsToSelector:@selector(stopAnimating)]) {
             [activityIndicator performSelector:@selector(stopAnimating) withObject:nil];
         }
@@ -371,6 +373,14 @@ CGFloat pb_infiniteScrollExtraBottomInset;
         
         self.pb_infiniteScrollState = PBInfiniteScrollStateNone;
         
+		// Initiate scroll to the bottom if due to user interaction contentOffset.y
+		// stuck somewhere between last cell and activity indicator
+		if(finished && iPad) {
+			CGPoint contentOffset = self.contentOffset;
+			contentOffset.y += [self pb_infiniteIndicatorRowHeight];
+			self.contentOffset = contentOffset;
+		}
+		
         // Call completion handler
         if(handler) {
             handler(self);
