@@ -371,17 +371,6 @@ CGFloat pb_infiniteScrollExtraBottomInset;
         
         self.pb_infiniteScrollState = PBInfiniteScrollStateNone;
         
-        // Initiate scroll to the bottom if due to user interaction contentOffset.y
-        // stuck somewhere between last cell and activity indicator
-        if(finished) {
-            CGFloat newY = self.contentSize.height - self.bounds.size.height + self.pb_infiniteScrollOriginalInsets.bottom;
-            
-            if(self.contentOffset.y > newY && newY > 0) {
-                [self setContentOffset:CGPointMake(0, newY) animated:YES];
-                TRACE(@"pb_stopAnimatingInfiniteScroll::scrollToBottom");
-            }
-        }
-        
         // Call completion handler
         if(handler) {
             handler(self);
