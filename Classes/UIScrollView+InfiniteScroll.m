@@ -12,7 +12,7 @@
 
 #define TRACE_ENABLED 0
 
-#define TRACE_ENABLED 0
+#define IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
 #if TRACE_ENABLED
 #   define TRACE(_format, ...) NSLog(_format, ##__VA_ARGS__)
