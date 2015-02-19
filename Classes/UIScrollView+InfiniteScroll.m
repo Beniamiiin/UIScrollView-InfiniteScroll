@@ -101,22 +101,26 @@ CGFloat pb_infiniteScrollExtraBottomInset;
 }
 
 - (void)removeInfiniteScroll {
-    // Ignore multiple calls to remove infinite scroll
-    if(!self.pb_infiniteScrollInitialized) {
-        return;
-    }
-    
-    // Remove pan gesture handler
-    [self.panGestureRecognizer removeTarget:self action:@selector(pb_handlePanGesture:)];
-    
-    // Destroy infinite scroll indicator
-    [self.infiniteScrollIndicatorView removeFromSuperview];
-    self.infiniteScrollIndicatorView = nil;
-    
-    // Mark infinite scroll as uninitialized
-    self.pb_infiniteScrollInitialized = NO;
-    
-    if(IPAD) {
+	[self removeInfiniteScrollWithChangeContentOffset:YES];
+}
+
+- (void)removeInfiniteScrollWithChangeContentOffset:(BOOL)changeContentOffset {
+	// Ignore multiple calls to remove infinite scroll
+	if(!self.pb_infiniteScrollInitialized) {
+		return;
+	}
+	
+	// Remove pan gesture handler
+	[self.panGestureRecognizer removeTarget:self action:@selector(pb_handlePanGesture:)];
+	
+	// Destroy infinite scroll indicator
+	[self.infiniteScrollIndicatorView removeFromSuperview];
+	self.infiniteScrollIndicatorView = nil;
+	
+	// Mark infinite scroll as uninitialized
+	self.pb_infiniteScrollInitialized = NO;
+	
+	if(IPAD && changeContentOffset) {
 		CGPoint contentOffset = self.contentOffset;
 		contentOffset.y -= [self pb_infiniteIndicatorRowHeight];
 		[self setContentOffset:contentOffset animated:YES];
