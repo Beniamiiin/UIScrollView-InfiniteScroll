@@ -52,6 +52,11 @@
 - (void)removeInfiniteScroll;
 
 /**
+ *  Unregister infinite scroll
+ */
+- (void)removeInfiniteScrollWithChangeContentOffset:(BOOL)changeContentOffset;
+
+/**
  *  Finish infinite scroll animations
  *
  *  You must call this method from your infinite scroll handler to finish all
